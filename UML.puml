@@ -1,0 +1,289 @@
+@startuml
+class game.util.SoundLoader {
+- {static} String CRASH_SOUND
+- {static} String MOVE_SOUND
+- {static} String WIN_SOUND
+- {static} String FREEZE_SOUND
+- {static} String LOSE_SOUND
+- {static} String CLICK_SOUND
+- {static} AudioClip audioClipCrash
+- {static} AudioClip audioClipMove
+- {static} AudioClip audioClipWin
+- {static} AudioClip audioClipLose
+- {static} AudioClip audioClick
++ {static} void playCrashSound()
++ {static} void playWinSound()
++ {static} void playLoseSound()
++ {static} void playClickSound()
++ {static} void playMoveSound()
+}
+interface game.tile.WalkThroughAble {
+~ boolean canWalkThrough()
+}
+class game.menu.GameStatusMenu {
+- StackPane rootStackPane
++ Parent createLoseMenu(StackPane)
++ Parent createVictoryMenu(StackPane)
+}
+class game.token.BoxToken {
+- int row
+- int column
++ int getRow()
++ void setRow(int)
++ int getColumn()
++ void setColumn(int)
+}
+class game.util.PlayerInfoWriterReader {
+- {static} String playerInfoObjectFileName
++ void write(PlayerInfo)
++ PlayerInfo read()
+}
+abstract class game.tile.AbstractTile {
+- boolean tokenOnIt
+# ImageView imageView
+- int row
+- int column
++ int getRow()
++ void setRow(int)
++ int getColumn()
++ void setColumn(int)
++ {abstract}boolean removeSokoban()
++ {abstract}boolean addSokobanToken(SokobanToken)
++ {abstract}boolean addBoxToken(BoxToken)
++ {abstract}boolean removeBoxToken()
++ boolean isTokenOnIt()
++ void setTokenOnIt(boolean)
++ {abstract}BoxToken getBoxToken()
+}
+class game.tile.TimeTile {
+- SokobanToken sokobanToken
+- ImageView imageView
+- BoxToken boxToken
++ boolean removeSokoban()
++ boolean addSokobanToken(SokobanToken)
++ boolean addBoxToken(BoxToken)
++ boolean removeBoxToken()
++ SokobanToken getSokobanToken()
++ void setSokobanToken(SokobanToken)
++ BoxToken getBoxToken()
++ void setBoxToken(BoxToken)
++ boolean canWalkThrough()
+}
+class game.tile.WallTile {
++ boolean removeSokoban()
++ boolean addSokobanToken(SokobanToken)
++ boolean addBoxToken(BoxToken)
++ boolean removeBoxToken()
++ BoxToken getBoxToken()
++ boolean canWalkThrough()
+}
+class game.menu.MenuItemPlay {
+}
+class game.menu.MenuItemHowToPlay {
+}
+class game.menu.MenuItemRestartLevel {
+}
+abstract class game.menu.MenuItem {
+- String menuItemName
+- Text text
++ String getMenuItemName()
++ void setMenuItemName(String)
+}
+class game.Main {
++ {static} Stage mainStage
++ {static} PlayerInfo playerInfo
++ {static} MediaPlayer backgroundMusicPlayer
++ {static} void main(String[])
++ void start(Stage)
++ {static} void setPlayerInfo(PlayerInfo)
++ {static} Stage getMainStage()
++ {static} void setMainStage(Stage)
++ void initializePlayerInfo()
+- void initializeBackgroundMusic()
++ {static} PlayerInfo getPlayerInfo()
+}
+class game.GameEvent {
++ {static} EventType<GameEvent> RESUME_GAME
++ {static} EventType<GameEvent> RESTART_LEVEL
++ {static} EventType<GameEvent> END_GAME_LEVEL
+}
+class game.menu.GamePauseMenu {
++ Parent createContent(StackPane)
+}
+class game.util.ImageLoader {
+- {static} Image imageBackground
+- {static} Image imageWall
+- {static} Image imageBox
+- {static} Image imageTime
+- {static} Image imageTarget
+- {static} Image imageLock
+- {static} Image imageBackButton
+- {static} Image soundOn
+- {static} Image soundOff
+- {static} Image imageLogo
++ {static} Image getImageBackground()
++ {static} Image getImageWall()
++ {static} Image getImageBox()
++ {static} Image getImageTime()
++ {static} Image getImageTarget()
++ {static} Image getImageLock()
++ {static} Image getImageBackButton()
++ {static} Image getImageLogo()
++ {static} Image getSoundOn()
++ {static} Image getSoundOff()
+}
+class game.PlayerInfo {
+- int lastPassedLevel
++ int getLastPassedLevel()
++ boolean grantLastPassedLevel(int)
+}
+class game.tile.TargetTile {
+- SokobanToken sokobanToken
+- BoxToken boxToken
++ boolean removeSokoban()
++ boolean addSokobanToken(SokobanToken)
++ boolean addBoxToken(BoxToken)
++ boolean removeBoxToken()
++ BoxToken getBoxToken()
++ boolean canWalkThrough()
+}
+class game.token.SokobanToken {
+- int row
+- int column
+- {static} int characterSelected
+- Image imageLeft1
+- Image imageLeft2
++ int getCharacterSelected()
++ {static} void selectCharacter(int)
++ int getRow()
++ void setRow(int)
++ int getColumn()
++ void setColumn(int)
++ void changeImageToUp()
++ void changeImageToDown()
++ void changeImageToLeft()
++ void changeImageToRight()
+}
+class game.menu.Title {
+}
+class game.Board {
+- StackPane stackPaneBoard
+- Pane paneRootBoard
+- AbstractTile[][] tiles
+- SokobanToken sokobanToken
+- int levelNumber
+- Parent nodePauseMenu
+- {static} Boolean pauseMenuShown
+- ArrayList<TargetTile> targetTiles
+- ArrayList<BoxToken> boxTokens
+- String remainingTime
+- Text textTime
+- Timeline sixtySecondsTimeLine
+- Text moveTimes
+- Text gameLevelText
+- int numberOfMoveTimes
+- boolean timerStarted
+- boolean passedLevel
+- Set<Point> collectedTimeTiles
++ int getLevelNumber()
++ void setLevelNumber(int)
++ StackPane getScene()
+- void readMap(int)
+- void createKeyboardHandlers(StackPane)
++ boolean isTimerStarted()
++ void setTimerStarted(boolean)
+- void moveSokobanUp()
+- void moveSokobanDown()
+- void moveSokobanLeft()
+- void moveSokobanRight()
+- void increaseNumberOfMovement()
+- void moveBoxToRight(AbstractTile[],int)
+- void moveBoxToLeft(AbstractTile[],int)
+- void moveBoxToDown(int,int)
+- void moveBoxToUP(int,int)
+- void isSolved()
+- void showPauseMenu()
++ {static} void setPauseMenuFalse()
++ {static} boolean getPauseMenuStatus()
++ void startTimer()
++ void pauseGame()
++ void resumeGame()
+- void increaseRemainingTime(int)
+}
+class game.tile.LevelTile {
+- int levelNumber
+- void createAndShowBoardStage()
+}
+class game.menu.MenuItemEndGame {
+}
+class game.menu.MenuItemExit {
+}
+class game.menu.MainMenu {
++ Parent createContent()
+}
+class game.menu.MenuVBox {
+- Line createLineSeparator()
+}
+class game.menu.MenuItemResume {
+}
+class game.tile.PathTile {
+- Text text
+- SokobanToken sokobanToken
+- BoxToken boxToken
+- void createText()
++ boolean removeSokoban()
++ boolean addSokobanToken(SokobanToken)
++ boolean addBoxToken(BoxToken)
++ boolean removeBoxToken()
++ SokobanToken getSokobanToken()
++ void setSokobanToken(SokobanToken)
++ BoxToken getBoxToken()
++ void setBoxToken(BoxToken)
++ boolean canWalkThrough()
+}
+class game.menu.MenuHowToPlay {
++ StackPane createHowToPlayScene()
+- void backToMainMenu()
+}
+interface game.SokobanGame {
+~ StackPane getScene()
+~ void startTimer()
+~ void pauseGame()
+~ void resumeGame()
+}
+class game.menu.MenuLevelSelector {
+- SokobanToken sokobanToken
+- {static} int CHARACTER_COUNT
+- {static} int MAX_ROW_COUNT
+- {static} int MAX_COLUMN_COUNT
++ StackPane createLevelSelectorStackPane()
+- void backToMainMenu()
+}
+
+
+javafx.scene.image.ImageView <|-- game.token.BoxToken
+javafx.scene.layout.StackPane <|-- game.tile.AbstractTile
+game.tile.WalkThroughAble <|.. game.tile.TimeTile
+game.tile.PathTile <|-- game.tile.TimeTile
+game.tile.WalkThroughAble <|.. game.tile.WallTile
+game.tile.AbstractTile <|-- game.tile.WallTile
+game.menu.MenuItem <|-- game.menu.MenuItemPlay
+game.menu.MenuItem <|-- game.menu.MenuItemHowToPlay
+game.menu.MenuItem <|-- game.menu.MenuItemRestartLevel
+javafx.scene.layout.StackPane <|-- game.menu.MenuItem
+javafx.application.Application <|-- game.Main
+javafx.event.Event <|-- game.GameEvent
+java.io.Serializable <|.. game.PlayerInfo
+game.tile.WalkThroughAble <|.. game.tile.TargetTile
+game.tile.AbstractTile <|-- game.tile.TargetTile
+javafx.scene.image.ImageView <|-- game.token.SokobanToken
+javafx.scene.layout.StackPane <|-- game.menu.Title
+game.SokobanGame <|.. game.Board
+javafx.scene.layout.StackPane <|-- game.tile.LevelTile
+game.menu.MenuItem <|-- game.menu.MenuItemEndGame
+game.menu.MenuItem <|-- game.menu.MenuItemExit
+javafx.scene.layout.VBox <|-- game.menu.MenuVBox
+game.menu.MenuItem <|-- game.menu.MenuItemResume
+game.tile.WalkThroughAble <|.. game.tile.PathTile
+game.tile.AbstractTile <|-- game.tile.PathTile
+@enduml
